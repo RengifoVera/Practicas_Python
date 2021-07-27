@@ -31,5 +31,5 @@ print("Hagamos Una prueba")
 resultado=modelo.predict([100.0])
 print("El Resultado es: " + str(resultado) + " Fahrenheint")
 
-print("Variables internas del modelo")
+print("Variables internas del modelo.....")
 print(capa.get_weights())
