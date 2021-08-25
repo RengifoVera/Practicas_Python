@@ -45,9 +45,10 @@ def suma_comun(a):
 
 intentos=int(input("Ingrese Cantidad de Intentos: "))
 lista_sumas=list()
-#limitando intentos amenos de 100 mil lanzamientos
+#limitando intentos a menos de 100 mil lanzamientos 
+# en caso de querer hacer mas lanzamientos,comentar o eliminar las lineas 49 y 51, y tabular correctamente
 if intentos > 100000:
-    print("INTENTALO CON UN VALOR MENOR A 100MIL INTENTOS")
+    print("INTENTALO CON UN VALOR MENOR A 100 MIL LANZAMIENTOS")
 else:
     for i in range(intentos):
         lista_sumas.append(resultado_sumas(Dado_Justo(),Dado_Cargado()))
