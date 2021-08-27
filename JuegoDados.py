@@ -15,7 +15,9 @@ def Dado_Justo():
     return dado
 
 def Dado_Cargado():
+    #lista de numeros del dado cargado
     numeros=[1,2,3,4,5,6]
+    #aunmenta la probabilidad en un 0.5% mas que el numero 6 caiga
     resultado=choices(numeros,weights=[1,1,1,1,1,5])
     r=int(resultado[0])
     return r
@@ -45,10 +47,10 @@ def suma_comun(a):
 
 intentos=int(input("Ingrese Cantidad de Intentos: "))
 lista_sumas=list()
-#limitando intentos a menos de 100 mil lanzamientos 
+#limitando intentos a menos de 1millon de lanzamientos 
 # en caso de querer hacer mas lanzamientos,comentar o eliminar las lineas 49 y 51, y tabular correctamente
-if intentos > 100000:
-    print("INTENTALO CON UN VALOR MENOR A 100 MIL LANZAMIENTOS")
+if intentos > 1000000:
+    print("INTENTALO CON UN VALOR MENOR A 1 MILLON LANZAMIENTOS")
 else:
     for i in range(intentos):
         lista_sumas.append(resultado_sumas(Dado_Justo(),Dado_Cargado()))
@@ -60,3 +62,7 @@ else:
     print("--------------------------------------------------------------------------------------------------------------------------------------------------")
     print("  la suma que se obtiene con más alta frecuencia y tiene como resultado el numero ->",maximo," con ",resultado[maximo],f"apariciones en {intentos} intentos")
     print("--------------------------------------------------------------------------------------------------------------------------------------------------")
+
+#grafica que muestra el numero que con mas frecuencia salio en la lista de sumas del justo y el cargado
+counts,bins,ignored=plt.hist(lista_sumas,25,density=False)
+plt.show()
