@@ -1,22 +1,6 @@
 from random import choice
 
-"""
-***ENUNCIADO DEL EJERCICIO***
 
-Un juego: (tomado de Bernardo Calderon, Introducción a la simulación, 1975) Usted
-lanza una moneda y cuenta el número de caras y sellos que se va obteniendo.El juego
-termina cuando la diferencia entre caras y sellos sea 3, no interesa cual sea mayor. En
-este instante usted recibe $8 por el juego, pero tiene que pagar $1 por cada lanzamiento
-que usted haya hecho.`? le conviene a Usted participar en el juego.
-
-Considere también la situación, donde el juego es adicionalmente limitado a un máximo
-de 15 lanzamientos.
-
-        *** CONCLUSION ***
-
-        EN GENERAL EL JUEGO TERMINA SIENDO DESFAVORABLE
-
-"""
 
 #me indica que salio en el lanzamiento si cara o sello de la moneda de manera aleatoria
 def lanzamiento_moneda():
