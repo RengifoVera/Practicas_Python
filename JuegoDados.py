@@ -1,14 +1,7 @@
 from random import randint,choices
 import numpy as np
 import matplotlib.pyplot as plt
-from numpy.core.defchararray import count
 
-""" 
-PROBLEMA DE LOS DADOS
-
-Asume que se juega con dos dados, uno de ellos es justo, el otro es cargado, es decir
-la probabilidad de obtener un 6 es 0.5, los demás números tienen igual probabilidad.
-decide cual es la suma que se obtiene con más alta frecuencia """
 
 def Dado_Justo():
     dado= randint(1,6)
@@ -23,12 +16,6 @@ def Dado_Cargado():
     return r
 
 def resultado_sumas(a,b):
-    
-    # print("Primer DADO: " + str(a))
-    # print("Segundo DADO: " + str(b))
-    # print("Suma: " + str(a+b))
-    # print("-------------------------")
-
     return(a+b)
             
 # def resultado_dado_Cargado():
