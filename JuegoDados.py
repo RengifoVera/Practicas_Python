@@ -1,7 +1,8 @@
 from random import randint,choices
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
+#PARA VER GRAFICAS DEBE TENER EL MODULO MATPLOTLIB , INSTALANDOLO CON PIP INSTALL MATPLOTLIB
 
 def Dado_Justo():
     dado= randint(1,6)
@@ -17,7 +18,10 @@ def Dado_Cargado():
 
 def resultado_sumas(a,b):
     return(a+b)
-            
+
+#MUESTRA UNA GRAFICA DONDE SE REFLEJA QUE HAY UN 
+# #DADO CARGADO CON MAYOR PROBABILIDAD DE SALIR UN NUMERO SEIS      
+  
 # def resultado_dado_Cargado():
 #     intentos=int(input("Ingrese cantidad de intentos: "))
 #     #arreglo de porcentajes con aumento de 0.5% en probabilidad de que caiga el numero 6
@@ -51,5 +55,5 @@ else:
     print("--------------------------------------------------------------------------------------------------------------------------------------------------")
 
 #grafica que muestra el numero que con mas frecuencia salio en la lista de sumas del justo y el cargado
-counts,bins,ignored=plt.hist(lista_sumas,25,density=False)
-plt.show()
+# counts,bins,ignored=plt.hist(lista_sumas,25,density=False)
+# plt.show()
