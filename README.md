@@ -1,5 +1,9 @@
 # PROBLEMAS DE SIMULACION COMPUTACIONAL 
 
+# Taller 1 - Simulación Computacional
+# Jhon Jairo Rengifo - 1759920
+# Sebastián Aguirre - 1759604
+
 # TIRO DE DADOS
 # CONCLUSION
 
@@ -23,3 +27,6 @@ En cuanto al resultado mínimo al realizar 100.000 iteraciones en ambas estrateg
 
 Se puede decir que entre mas amplio sea el intervalo  del tiempo de control (40,100) segundos de boletas se generara un cola mas larga y se obtiene un tiempo promedio de atencion muy altos y la cola se mueve con menor rapides,y si los intervalos (20,80) segundos de tiempo de atencion son cortos las fila sera mas larga pero se movera mas rapido Y el promedio de tiempo de atencion seran mucho mas bajos.
 
+# CRECIMIENTO DE BACTERIAS
+
+La población crece de una manera exponencial, lo que nos da a entender que la rapidez con que se reproducen es abrumadora, si tuviéramos un índice de mortalidad proporcional para esta población, esta seria muy equilibrada, garantizando una sostenibilidad, y no una reproducción desproporcionada. 
