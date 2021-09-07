@@ -2,13 +2,13 @@ from random import randint
 
 def tiempo_llegada():
     return randint(0,120)
-# #PROBAR EL CASO DE TIEMPO DE CONTROL DE ENTRADAS ENTRE 40 Y 100 SEGUNDOS
-# def control_boleta():
-#     return randint(40,100)
-
-# DESCOMENTAR PARA PROBAR EL CASO DE TIEMPO DE CONTROL ENTRE 20 Y 80 SEGUNDOS
+#PROBAR EL CASO DE TIEMPO DE CONTROL DE ENTRADAS ENTRE 40 Y 100 SEGUNDOS
 def control_boleta():
-    return randint(20,80)
+    return randint(40,100)
+
+# # DESCOMENTAR PARA PROBAR EL CASO DE TIEMPO DE CONTROL ENTRE 20 Y 80 SEGUNDOS
+# def control_boleta():
+#     return randint(20,80)
 
 #Listas de Tiempos entre llegada y tiempo de llegada del sgte cliente
 lista_tiempo=list()
