@@ -1,9 +1,4 @@
 def generador_congruente(x,a,c,m):
-    
-    x=int(input("Ingrese X0: "))
-    a=int(input("Ingrese A: "))
-    c=int(input("Ingrese C: "))
-    m=int(input("Ingrese M: "))
 
     resultado=list()
     recurrencia=list()
@@ -18,8 +13,9 @@ def generador_congruente(x,a,c,m):
         if x == resultado[0]:
             break
 
-    print(recurrencia,resultado)
+    print(f"Recurrencia: {recurrencia} \n Resultado: {resultado}")
     print(f"Periodo: {len(resultado)-1}")
-        
+    return (recurrencia)
+    
+recurrencia=generador_congruente(5,106,1283,6975)
 
-print(generador_congruente(27,17,43,100))
