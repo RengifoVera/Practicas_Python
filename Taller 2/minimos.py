@@ -14,8 +14,8 @@ def generador_minimo(a,x,m):
                 break
         else:
             break
-    print(f"Recurrencias: {recurrencias}")
-    print(f"Generador: {min}")
-    print(f"Periodo: {len(min)-1}")
-    return recurrencias
-recurrencias=generador_minimo(106,5,6075)
+    # print(f"Recurrencias: {recurrencias}")
+    # print(f"Generador: {min}")
+    # print(f"Periodo: {len(min)-1}")
+    return recurrencias,min
+# recurrencias=generador_minimo(106,5,6075)
