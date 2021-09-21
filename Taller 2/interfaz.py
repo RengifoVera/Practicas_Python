@@ -5,7 +5,7 @@ from minimos import *
 root=Tk()
 
 root.title("Interfaz Grafica")
-root.geometry('1030x1000')
+root.geometry('1100x700')
 
 #GUI GENERADORES PSEUDOALEATORIOS
 frame_inicio=LabelFrame(root,text="GENERADORES" ,font=("Arial",12),labelanchor=N)
@@ -70,6 +70,10 @@ vert.place(x=1036,y=62,height=520)
 
 #INSERTA DATOS GENERADOR CONGRUENTE
 def generar_con(x,a,c,m):
+    records=Tabla_resultados.get_children()
+    for elementos in records:
+            Tabla_resultados.delete(elementos)
+            entra_periodo.delete(0,END)
     if entra_x0.get() == ''or entra_a.get()== '' or entra_c.get()== '' or entra_m.get() == '':
         mb.showerror("EROR","CAMPOS VACIO O FALTA INGRESAR ALGUN CAMPO")
     else:
@@ -77,13 +81,16 @@ def generar_con(x,a,c,m):
         for i in range(len(recurencia)):
             Tabla_resultados.insert("",0,values=(recurencia[i],resultado[i]))
         entra_periodo.insert(0,len(recurencia))
-        limpiar()
+        #limpiar()
 
-
+#INSERTA DATOS GENERADOR MINIMO
 def generador_min(x,a,m):
+    records=Tabla_resultados.get_children()
+    for elementos in records:
+            Tabla_resultados.delete(elementos)
+            entra_periodo.delete(0,END)
     if entra_x0.get() == ''or entra_a.get()== '' or entra_m.get() == '':
         mb.showerror("EROR","CAMPOS VACIO O FALTA INGRESAR ALGUN CAMPO")
-
     else:
         recurrencias,min=generador_minimo(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()))
 
