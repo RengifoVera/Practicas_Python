@@ -1,11 +1,10 @@
-from minimos import recurrencias
-import math
-
+from minimos import generador_minimo
 def xcuadrado():
-    xcrit=16.92
-    lista_resultados=list()
-    rango=[0,0,0,0,0,0,0,0,0,0]
+    from interfaz import entra_a,entra_x0,entra_m
+    recurrencias,min=generador_minimo(int(entra_a.get()),int(entra_x0.get()),int(entra_m.get())) 
     cont=0
+    xcrit=16.92
+    rango=[0,0,0,0,0,0,0,0,0,0]
     FE=(len(recurrencias)-1)/10
     for u in recurrencias:
         if u >=0 and u < 0.1:
@@ -37,24 +36,5 @@ def xcuadrado():
         lista_xcalculado.append(xcalculado)
         cont+=1
 
-
-    return(f"FE: {FE}\nFO : {rango} \n(FE - FO)^2 / FE: {lista_xcalculado}\nXCalculado: {sum(lista_xcalculado)}")
-
-
-
-
-
-
-xcuadrado()
-
-
-
-
-
-
-
-        
-
-
-
-print(xcuadrado())
+    return rango,FE,lista_xcalculado
+    #return(f"FE: {FE}\nFO : {rango} \n(FE - FO)^2 / FE: {lista_xcalculado}\nXCalculado: {sum(lista_xcalculado)}")
