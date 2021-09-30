@@ -1,26 +1,23 @@
-from math import floor
-def generador_minimo(a,x,m):
+
+def generador_minimo(x,a,m):
     recurrencias=list()
     min=list()
-    min.append(x)
-    q=floor(m/a)
-    r=m%a
-    for i in range(m):
-        x=(a * (x % q) - r * (floor(x/q)))
-        if x < 0:    
-            x=x+m
-        recurrencias.append(round(x/m,2))
-        min.append(x)
-        if x < 0:
-            print("\nCON LOS DATOS INGRESADOS NO SE PUEDE EVITAR EL OVERFLOW","\nPROBABLEMENTE LOS DATOS SEAN MUY PEQUEÑOS",x)
-            break
-        elif x == min[0]:
-            break
-       
-#    print(f"Recurrencias: {recurrencias}")
-#    print(f"Generador: {min}")
-#    print(f"Periodo: {len(min)-1}")
-    return recurrencias,min
-#recurrencias,min=generador_minimo(106,5,6075)
 
-#print(recurrencias,min)
+    def se_repite(arr,x):
+        if arr.count(x)>1:
+            return True
+        else:
+            return False
+
+    for i in range(m):
+        xn=(a*x)%m
+        R=round(xn/m,2)
+        recurrencias.append(R)
+        min.append(xn)
+        x=xn
+        if se_repite(min,min[0]):
+            break       
+   
+
+    return recurrencias,min
+
