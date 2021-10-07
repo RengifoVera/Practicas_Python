@@ -1,6 +1,9 @@
-from tkinter import Entry, Label, LabelFrame, Tk,Button,N, Toplevel, font, ttk, CENTER, END ,messagebox as mb,Frame
+from tkinter import Entry, Label, LabelFrame, StringVar, Tk,Button,N, Toplevel, font, ttk, CENTER, END ,messagebox as mb,Frame
+from tkinter.constants import CHECKBUTTON, E
 from congruente import *
 from minimos import generador_minimo
+from prueba_corridas import prueba_corrridas_congruente
+from randoom import generador_lenguaje
 
 root=Tk()
 
@@ -47,7 +50,10 @@ btn_minimo=Button(frame_inicio,text="Generador\n Minimo Estandar",width=17,heigh
 )).grid(row=3,column=8,padx=15,rowspan=2)
 
 
-btn_random=Button(frame_inicio,text="Generador\n Random.py",width=17,height=2,font=("Arial",12),bg="MediumPurple1").grid(row=6,column=8,rowspan=2)
+btn_random=Button(frame_inicio,text="Generador\n Random.py",width=17,height=2,font=("Arial",12),bg="MediumPurple1",command=lambda:generador_lenguaje(
+    entra_m.get()
+))
+btn_random.grid(row=6,column=8,rowspan=2)
 
 
 #TABLA DE RESULTADOS GENERADORES
@@ -69,6 +75,13 @@ Tabla_resultados.heading('#2',text='Generador',anchor=CENTER)
 #SCROLLBAR
 vert=ttk.Scrollbar(root,orient="vertical",command=Tabla_resultados.yview)
 vert.place(x=1036,y=62,height=520)
+
+entra_tipo=ttk.Combobox(root,width=20,state='readonly',font=("Arial",12))
+entra_tipo.set("Ingrese Opcion")
+opciones=["Congruente","Minimo","Random.py"]
+entra_tipo['values']=opciones
+entra_tipo.place(x=440,y=350)
+
 
 
 #GENERADORES
@@ -100,16 +113,26 @@ def generador_min(x,a,m):
         for i in range(len(recurrencias)-1,-1,-1):
             Tabla_resultados.insert("",0,values=(recurrencias[i],min[i]))
         entra_periodo.insert(0,len(recurrencias)-1)
-    return recurrencias
-    #limpiar()    
 
 
-
+#INSERTA DATOS GENERADOR DEL LENGUAJE
+def generador_len(m):
+    records=Tabla_resultados.get_children()
+    for elementos in records:
+            Tabla_resultados.delete(elementos)
+            entra_periodo.delete(0,END)
+    if entra_m.get() == '':
+        mb.showerror("ERROR","CAMPOS VACIO O FALTA INGRESAR ALGUN CAMPO")
+    else:
+        recurrencias,min=generador_lenguaje(int(entra_m.get()))
+        for i in range(len(recurrencias)-1,-1,-1):
+            Tabla_resultados.insert("",0,values=(recurrencias[i],min[i]))
+        entra_periodo.insert(0,len(recurrencias)-1)
 
 #PRUEBAS DE UNIFORMIDAD
 
 #CHICUADRADO
-from prueba_chicuadrado import chi_cuadrado
+from prueba_chicuadrado import chi_cuadrado,chi_cuadrado_congruente
 def prueba_chicuadrado():
     
     ventana_chi=Toplevel()
@@ -135,15 +158,39 @@ def prueba_chicuadrado():
 
     #RANGO
     rango_i=[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
-    FO,FE=chi_cuadrado(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()))
+    CHI_CRI=19.62
+
+    #ELGIENDO GENERADOR
+    if entra_tipo.get()=="Ingrese Opcion":
+        mb.showerror("ERROR","INGRESE UN TIPO DE PRUEBA")
+    if entra_tipo.get()=="Minimo":
+        FO,FE=chi_cuadrado(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()))
+    elif entra_tipo.get()=="Congruente":
+        FO,FE=chi_cuadrado_congruente(int(entra_x0.get()),int(entra_a.get()),int(entra_c.get()),int(entra_m.get()))
+    
+    #_---------------------_#
     records=Tabla_Chi.get_children()
     for elementos in records:
             Tabla_Chi.delete(elementos)
+
+    #_---------------------_#
+    CHI_CAL=0
     for i in range(len(rango_i)-1,-1,-1):
         Tabla_Chi.insert("",0,values=(f"{rango_i[i]}-{round((rango_i[i]+0.1),1)} {FO[i]} {FE} {((FE - FO[i]) ** 2) / FE}"))
+        CHI_CAL = CHI_CAL + ((FE - FO[i]) ** 2) / FE
+
+    
+    #RESULTADO
+   
+
+    if CHI_CAL <= CHI_CRI:
+        Label(ventana_chi,text=f"{CHI_CAL} <= {CHI_CRI} se acepta la distribucion U(0,1)").pack(side="bottom")
+    else:
+        Label(ventana_chi,text="No se acepta la distribucion U(0,1)").pack(side="bottom")
+
 
 #KOLMOGOROV
-from prueba_kolmogorov import kolmogorov
+from prueba_kolmogorov import kolmogorov, kolmogorov_congruente
 def prueba_kolmogorov():
     ventana_kolmo=Toplevel()
     ventana_kolmo.title("Prueba KOLMOGOROV")
@@ -170,29 +217,46 @@ def prueba_kolmogorov():
     Tabla_kolmo.heading('#5',text='PEA',anchor=CENTER)
     Tabla_kolmo.heading('#6',text='|PEA - POA|',anchor=CENTER)
 
+    #ELIGIENDO GENERADOR PARA REALIZAR PRUEBAS
+    if entra_tipo.get()=="Ingrese Opcion":
+        mb.showerror("ERROR","INGRESE UN TIPO DE PRUEBA")
+    if entra_tipo.get()=="Minimo":
+            rangos,L_FOA,POA,PEA,PEA_POA=kolmogorov(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()))
+    elif entra_tipo.get()=="Congruente":
+            rangos,L_FOA,POA,PEA,PEA_POA=kolmogorov_congruente(int(entra_x0.get()),int(entra_a.get()),int(entra_c.get()),int(entra_m.get()))
+
 
     #RANGO KOLMOGOROV
     rango_i=[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
     rangos,L_FOA,POA,PEA,PEA_POA=kolmogorov(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()))
-
+    DM_critico = 0.043
 
     records=Tabla_kolmo.get_children()
     for elementos in records:
             Tabla_kolmo.delete(elementos)
     for i in range(len(rango_i)-1,-1,-1):
             Tabla_kolmo.insert("",0,values=(f"{rango_i[i]}-{round((rango_i[i]+0.1),1)} {rangos[i]} {L_FOA[i]} {POA[i]} {PEA[i]} {PEA_POA[i]}"))
+    
+
+
+    #CONCLUSIONES RESULTADOS
+    if max(PEA_POA) <= DM_critico:
+        Label(ventana_kolmo,text=f"{max(PEA_POA)} <= {DM_critico} se acepta la distribucion U(0,1)").pack(side="bottom")
+    else:
+        Label(ventana_kolmo,text="No se acepta la distribucion U(0,1)").pack(side="bottom")
+
+
+
 
 frame_uniformidad=LabelFrame(root,text="PRUEBAS DE UNIFORMIDAD",font=("Arial",12),labelanchor=N)
 frame_uniformidad.pack()
 frame_uniformidad.place(x=50,y=300)
 
-#SE ELIGE CON QUE GENERADOR SE DESEA HACER LAS PRUEBAS DE BONDAD
 
-entra_tipo=ttk.Combobox(frame_uniformidad,width=20,state='readonly')
-entra_tipo.set("Ingrese Opcion")
-opciones=["Congruente","Minimo"]
-entra_tipo['values']=opciones
-entra_tipo.grid(row=0,column=3,pady=15,padx=15)
+
+
+
+
 
 btn_chi=Button(frame_uniformidad,text="CHI CUADRADO(X2)",width=17,height=2,font=("Arial",12),bg="MediumPurple1",command=lambda:prueba_chicuadrado())
 btn_chi.grid(row=0,column=0,padx=15,pady=15)
@@ -210,16 +274,26 @@ def prueba_corrida():
     ventana_corrida.title("Prueba CORRIDA")
     frame_corrida=Frame(ventana_corrida)
     frame_corrida.pack()
+     #ELIGIENDO GENERADOR PARA REALIZAR PRUEBAS
+    if entra_tipo.get()=="Ingrese Opcion":
+        mb.showerror("ERROR","INGRESE UN TIPO DE PRUEBA")
+    if entra_tipo.get()=="Minimo":
+        corrida,Z_OBSERVADO=prueba_corrridas(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()))
+    elif entra_tipo.get()=="Congruente":
+        corrida,Z_OBSERVADO=prueba_corrridas_congruente(int(entra_x0.get()),int(entra_a.get()),int(entra_c.get()),int(entra_m.get()))
 
-    corrida=prueba_corrridas(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()))
+    Z1 = 1.96
+    Z2 = -1.96
 
     Label(frame_corrida,text="PRUEBA CORRIDA :",font=("Arial",12)).grid(row=0,column=0,padx=15,pady=20)
-    entra_corrida=Entry(frame_corrida,font=("Arial"),width=100,fg="red")
-    entra_corrida.grid(row=0,column=1,padx=15,pady=20)
-    print(corrida)
+    Label(frame_corrida,text=corrida,font=("Arial",20),fg="red").grid(row=0,column=1,padx=15,pady=20)
+
    
 
-    entra_corrida.insert(END,corrida)
+    if Z_OBSERVADO >= Z2 and Z_OBSERVADO<= Z1:
+        Label(ventana_corrida,text=f"{Z_OBSERVADO} se encuentra en el intervalo [{Z1},{Z2}]").pack(side="bottom")
+    else:
+        Label(ventana_corrida,text=f"{Z_OBSERVADO} NO se encuentra en el intervalo [{Z1},{Z2}]").pack(side="bottom")
 
     
 
@@ -232,19 +306,6 @@ btn_corrida=Button(frame_independencia,text="CORRIDA",width=17,height=2,font=("A
 btn_corrida.grid(row=0,column=0,padx=15,pady=15)
 btn_serie=Button(frame_independencia,text="SERIE",width=17,height=2,font=("Arial",12),bg="MediumPurple1").grid(row=0,column=1,padx=15,pady=15)
 btn_poker=Button(frame_independencia,text="POKER",width=17,height=2,font=("Arial",12),bg="MediumPurple1").grid(row=1,column=0,padx=15,pady=15)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
