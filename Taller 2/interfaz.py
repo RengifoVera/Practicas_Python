@@ -2,7 +2,7 @@ from tkinter import Entry, Label, LabelFrame, StringVar, Tk,Button,N, Toplevel, 
 from tkinter.constants import CHECKBUTTON, E
 from congruente import *
 from minimos import generador_minimo
-from prueba_corridas import prueba_corrridas_congruente
+from prueba_corridas import prueba_corrridas_congruente, prueba_corrridas_lenguaje
 from randoom import generador_lenguaje
 
 root=Tk()
@@ -32,7 +32,11 @@ btn_limpiar.grid(row=5,column=4,rowspan=2)
 
 Label(frame_inicio,text="M",font=("Arial")).grid(row=3,column=5)
 entra_m=Entry(frame_inicio,width=25)
-entra_m.grid(row=4,column=5,padx=10,pady=20)
+entra_m.grid(row=4,column=5,padx=10)
+
+Label(frame_inicio,text="Decimales",font=("Arial",8)).grid(row=5,column=5)
+entra_d=Entry(frame_inicio,width=25)
+entra_d.grid(row=6,column=5,padx=10)
 
 
 btn_congruente=Button(frame_inicio,text="Generador\nCongruente",width=17,height=2,font=("Arial",12),bg="MediumPurple1",command=lambda:generar_con(
@@ -46,12 +50,13 @@ btn_congruente.grid(row=1,column=8,padx=15,rowspan=2)
 btn_minimo=Button(frame_inicio,text="Generador\n Minimo Estandar",width=17,height=2,font=("Arial",12),bg="MediumPurple1",command=lambda:generador_min(
     entra_x0.get(),
     entra_a.get(),
-    entra_m.get()
+    entra_m.get(),
+    entra_d.get()
 )).grid(row=3,column=8,padx=15,rowspan=2)
 
 
-btn_random=Button(frame_inicio,text="Generador\n Random.py",width=17,height=2,font=("Arial",12),bg="MediumPurple1",command=lambda:generador_lenguaje(
-    entra_m.get()
+btn_random=Button(frame_inicio,text="Generador\n Random.py",width=17,height=2,font=("Arial",12),bg="MediumPurple1",command=lambda:generador_len(
+    int(entra_m.get())
 ))
 btn_random.grid(row=6,column=8,rowspan=2)
 
@@ -101,7 +106,7 @@ def generar_con(x,a,c,m):
         #limpiar() 
 
 #INSERTA DATOS GENERADOR MINIMO
-def generador_min(x,a,m):
+def generador_min(x,a,m,d):
     records=Tabla_resultados.get_children()
     for elementos in records:
             Tabla_resultados.delete(elementos)
@@ -109,10 +114,10 @@ def generador_min(x,a,m):
     if entra_x0.get() == ''or entra_a.get()== '' or entra_m.get() == '':
         mb.showerror("ERROR","CAMPOS VACIO O FALTA INGRESAR ALGUN CAMPO")
     else:
-        recurrencias,min=generador_minimo(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()))
+        recurrencias,min=generador_minimo(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()),int(entra_d.get()))
         for i in range(len(recurrencias)-1,-1,-1):
             Tabla_resultados.insert("",0,values=(recurrencias[i],min[i]))
-        entra_periodo.insert(0,len(recurrencias)-1)
+        entra_periodo.insert(0,len(min)-1)
 
 
 #INSERTA DATOS GENERADOR DEL LENGUAJE
@@ -121,10 +126,10 @@ def generador_len(m):
     for elementos in records:
             Tabla_resultados.delete(elementos)
             entra_periodo.delete(0,END)
-    if entra_m.get() == '':
+    if entra_m.get()=='':
         mb.showerror("ERROR","CAMPOS VACIO O FALTA INGRESAR ALGUN CAMPO")
     else:
-        recurrencias,min=generador_lenguaje(int(entra_m.get()))
+        recurrencias,min=generador_lenguaje(entra_m.get())
         for i in range(len(recurrencias)-1,-1,-1):
             Tabla_resultados.insert("",0,values=(recurrencias[i],min[i]))
         entra_periodo.insert(0,len(recurrencias)-1)
@@ -132,7 +137,7 @@ def generador_len(m):
 #PRUEBAS DE UNIFORMIDAD
 
 #CHICUADRADO
-from prueba_chicuadrado import chi_cuadrado,chi_cuadrado_congruente
+from prueba_chicuadrado import chi_cuadrado,chi_cuadrado_congruente,chi_cuadrado_random
 def prueba_chicuadrado():
     
     ventana_chi=Toplevel()
@@ -164,10 +169,12 @@ def prueba_chicuadrado():
     if entra_tipo.get()=="Ingrese Opcion":
         mb.showerror("ERROR","INGRESE UN TIPO DE PRUEBA")
     if entra_tipo.get()=="Minimo":
-        FO,FE=chi_cuadrado(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()))
+        FO,FE=chi_cuadrado(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()),int(entra_d.get()))
     elif entra_tipo.get()=="Congruente":
         FO,FE=chi_cuadrado_congruente(int(entra_x0.get()),int(entra_a.get()),int(entra_c.get()),int(entra_m.get()))
-    
+    elif entra_tipo.get()=="Random.py":
+        FO,FE=chi_cuadrado_random(int(entra_m.get()))
+
     #_---------------------_#
     records=Tabla_Chi.get_children()
     for elementos in records:
@@ -188,9 +195,8 @@ def prueba_chicuadrado():
     else:
         Label(ventana_chi,text="No se acepta la distribucion U(0,1)").pack(side="bottom")
 
-
 #KOLMOGOROV
-from prueba_kolmogorov import kolmogorov, kolmogorov_congruente
+from prueba_kolmogorov import kolmogorov, kolmogorov_congruente,kolmogorov_lenguaje
 def prueba_kolmogorov():
     ventana_kolmo=Toplevel()
     ventana_kolmo.title("Prueba KOLMOGOROV")
@@ -221,14 +227,14 @@ def prueba_kolmogorov():
     if entra_tipo.get()=="Ingrese Opcion":
         mb.showerror("ERROR","INGRESE UN TIPO DE PRUEBA")
     if entra_tipo.get()=="Minimo":
-            rangos,L_FOA,POA,PEA,PEA_POA=kolmogorov(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()))
+            rangos,L_FOA,POA,PEA,PEA_POA=kolmogorov(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()),int(entra_d.get()))
     elif entra_tipo.get()=="Congruente":
             rangos,L_FOA,POA,PEA,PEA_POA=kolmogorov_congruente(int(entra_x0.get()),int(entra_a.get()),int(entra_c.get()),int(entra_m.get()))
-
+    elif entra_tipo.get()=="Random.py":
+            rangos,L_FOA,POA,PEA,PEA_POA=kolmogorov_lenguaje(int(entra_m.get()))
 
     #RANGO KOLMOGOROV
     rango_i=[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
-    rangos,L_FOA,POA,PEA,PEA_POA=kolmogorov(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()))
     DM_critico = 0.043
 
     records=Tabla_kolmo.get_children()
@@ -266,11 +272,9 @@ btn_kolmo.grid(row=0,column=1,padx=15,pady=15)
 
 #PRUEBAS DE INDEPENDENCIA
 
-
+from prueba_corridas import prueba_corrridas
 def prueba_corrida():
-    from prueba_corridas import prueba_corrridas
     ventana_corrida=Toplevel()
-
     ventana_corrida.title("Prueba CORRIDA")
     frame_corrida=Frame(ventana_corrida)
     frame_corrida.pack()
@@ -278,9 +282,11 @@ def prueba_corrida():
     if entra_tipo.get()=="Ingrese Opcion":
         mb.showerror("ERROR","INGRESE UN TIPO DE PRUEBA")
     if entra_tipo.get()=="Minimo":
-        corrida,Z_OBSERVADO=prueba_corrridas(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()))
+        corrida,Z_OBSERVADO=prueba_corrridas(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()),int(entra_d.get()))
     elif entra_tipo.get()=="Congruente":
         corrida,Z_OBSERVADO=prueba_corrridas_congruente(int(entra_x0.get()),int(entra_a.get()),int(entra_c.get()),int(entra_m.get()))
+    elif entra_tipo.get()=="Random.py":
+        corrida,Z_OBSERVADO=prueba_corrridas_lenguaje(int(entra_m.get()))
 
     Z1 = 1.96
     Z2 = -1.96
