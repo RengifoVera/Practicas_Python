@@ -60,7 +60,6 @@ def prueba_poker5(x,a,m,d):
  #   print(f"suma {suma}")
     return categorias,probabilidades,list_ei,list_fefo,suma
 
-#print(prueba_poker5())
 
 def prueba_poker5_congruente(x,a,c,m):
     recurrencias,min=generador_congruente(x,a,c,m)

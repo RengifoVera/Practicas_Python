@@ -38,7 +38,7 @@ Label(frame_inicio,text="Decimales",font=("Arial",8)).grid(row=5,column=5)
 #SELECCION DE DECIMALES
 entra_d=ttk.Combobox(frame_inicio,width=20,state='readonly',font=("Arial",12))
 entra_d.set("Cantidad Decimales")
-decimales=["3","5"]
+decimales=["2","3","5"]
 entra_d['values']=decimales
 entra_d.grid(row=6,column=5,padx=10)
 
@@ -85,12 +85,13 @@ Tabla_resultados.heading('#2',text='Generador',anchor=CENTER)
 vert=ttk.Scrollbar(root,orient="vertical",command=Tabla_resultados.yview)
 vert.place(x=1036,y=62,height=520)
 
-entra_tipo=ttk.Combobox(root,width=20,state='readonly',font=("Arial",12))
+entra_tipo=ttk.Combobox(root,width=15,state='readonly',font=("Arial",12))
 entra_tipo.set("Ingrese Opcion")
 opciones=["Congruente","Minimo","Random.py"]
 entra_tipo['values']=opciones
-entra_tipo.place(x=440,y=350)
+entra_tipo.place(x=460,y=400)
 
+Label(root,text="Elige con cual Generador\nhacer las pruebas" ,font=("Arial",10)).place(x=475,y=350)
 
 
 #GENERADORES
@@ -111,6 +112,7 @@ def generar_con(x,a,c,m):
 
 #INSERTA DATOS GENERADOR MINIMO
 def generador_min(x,a,m,d):
+    
     records=Tabla_resultados.get_children()
     for elementos in records:
             Tabla_resultados.delete(elementos)
@@ -122,7 +124,7 @@ def generador_min(x,a,m,d):
         for i in range(len(recurrencias)-1,-1,-1):
             Tabla_resultados.insert("",0,values=(recurrencias[i],min[i]))
         entra_periodo.insert(0,len(min)-1)
-
+    
 
 #INSERTA DATOS GENERADOR DEL LENGUAJE
 def generador_len(m):
@@ -259,7 +261,7 @@ def prueba_kolmogorov():
 
 frame_uniformidad=LabelFrame(root,text="PRUEBAS DE UNIFORMIDAD",font=("Arial",12),labelanchor=N)
 frame_uniformidad.pack()
-frame_uniformidad.place(x=50,y=300)
+frame_uniformidad.place(x=50,y=320)
 
 
 btn_chi=Button(frame_uniformidad,text="CHI CUADRADO(X2)",width=17,height=2,font=("Arial",12),bg="MediumPurple1",command=lambda:prueba_chicuadrado())
@@ -301,45 +303,67 @@ def prueba_corrida():
         Label(ventana_corrida,text=f"{Z_OBSERVADO} NO se encuentra en el intervalo [{Z1},{Z2}]").pack(side="bottom")
 
 
-# #from prueba_series import prueba_series, prueba_series_chicuadrado
-# #PRUEBA SERIES
-# def prueba_series_interfaz():
-#     ventana_series=Toplevel()
-#     ventana_series.title("Prueba SERIES")
-#     frame_serie=Frame(ventana_series)
-#     frame_serie.pack()
+from prueba_series import prueba_series, prueba_series_chicuadrado
+#PRUEBA SERIES
+def prueba_series_interfaz():
+    ventana_series=Toplevel()
+    ventana_series.title("Prueba SERIES")
+    frame_serie=Frame(ventana_series)
+    frame_serie.pack()
 
-#     Tabla_serie=ttk.Treeview(frame_serie,columns=[f"{n}" for n in range(0,6)],height=6)
-#     Tabla_serie.grid(row=0,column=0)
+    Tabla_serie=ttk.Treeview(frame_serie,columns=[f"{n}" for n in range(0,6)],height=6)
+    Tabla_serie.grid(row=0,column=0)
 
-#     Tabla_serie.column('#0',width=0,minwidth=0,stretch=False)
-#     Tabla_serie.column('#1',width=70,minwidth=0,stretch=False)
-#     Tabla_serie.column('#2',width=70,minwidth=0,stretch=False)
-#     Tabla_serie.column('#3',width=70,minwidth=0,stretch=False)
-#     Tabla_serie.column('#4',width=70,minwidth=0,stretch=False)
-#     Tabla_serie.column('#5',width=70,minwidth=0,stretch=False)
-#     Tabla_serie.column('#6',width=70,minwidth=0,stretch=False)
+    Tabla_serie.column('#0',width=0,minwidth=0,stretch=False)
+    Tabla_serie.column('#1',width=70,minwidth=0,stretch=False)
+    Tabla_serie.column('#2',width=70,minwidth=0,stretch=False)
+    Tabla_serie.column('#3',width=70,minwidth=0,stretch=False)
+    Tabla_serie.column('#4',width=70,minwidth=0,stretch=False)
+    Tabla_serie.column('#5',width=70,minwidth=0,stretch=False)
+    Tabla_serie.column('#6',width=70,minwidth=0,stretch=False)
 
 
-#     Tabla_serie.heading('#0',text='',anchor=CENTER)
-#     Tabla_serie.heading('#1',text='',anchor=CENTER)
-#     Tabla_serie.heading('#2',text='0.2-0.4',anchor=CENTER)
-#     Tabla_serie.heading('#3',text='0.4-0.6',anchor=CENTER)
-#     Tabla_serie.heading('#4',text='0.6-0.8',anchor=CENTER)
-#     Tabla_serie.heading('#5',text='0.8-1',anchor=CENTER)
-#     Tabla_serie.heading('#6',text='0.8-1',anchor=CENTER)
+    Tabla_serie.heading('#0',text='',anchor=CENTER)
+    Tabla_serie.heading('#1',text='',anchor=CENTER)
+    Tabla_serie.heading('#2',text='0.2-0.4',anchor=CENTER)
+    Tabla_serie.heading('#3',text='0.4-0.6',anchor=CENTER)
+    Tabla_serie.heading('#4',text='0.6-0.8',anchor=CENTER)
+    Tabla_serie.heading('#5',text='0.8-1',anchor=CENTER)
+    Tabla_serie.heading('#6',text='0.8-1',anchor=CENTER)
 
-#     rango_i=[0,0.2,0.4,0.6,0.8]
+    
+         #ELIGIENDO GENERADOR PARA REALIZAR PRUEBAS
+    if entra_tipo.get()=="Ingrese Opcion":
+        mb.showerror("ERROR","INGRESE UN TIPO DE PRUEBA")
+    if entra_tipo.get()=="Minimo":
+        recurrencias,min=generador_minimo(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()),int(entra_d.get()))
+    elif entra_tipo.get()=="Congruente":
+        recurrencias,min=generador_congruente(int(entra_x0.get()),int(entra_a.get()),int(entra_c.get()),int(entra_m.get()))
+    elif entra_tipo.get()=="Random.py":
+        recurrencias,min=generador_lenguaje(int(entra_m.get()))
 
-#     matriz=prueba_series(generador_minimo(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()),int(entra_d.get())))
-#     chi=prueba_series_chicuadrado(matriz,generador_minimo(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()),int(entra_d.get())))
-#     records=Tabla_serie.get_children()
-#     for elementos in records:
-#             Tabla_serie.delete(elementos)
-#     for i in range(len(rango_i)-1,-1,-1):
-#             Tabla_serie.insert("",0,values=(f"{rango_i[i]}-{round((rango_i[i]+0.2),1)}"))
 
-#     #Label(ventana_series,text=(F"{matriz}")).pack(side="bottom")
+    recurrencias,min=generador_minimo(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()),int(entra_d.get()))
+
+    rango_i=[0,0.2,0.4,0.6,0.8]
+    recurrencias.pop()
+    matriz=prueba_series(recurrencias)
+    matriz_chicuadrado,suma=prueba_series_chicuadrado(matriz,recurrencias)
+
+    chi_critico=36.42
+    records=Tabla_serie.get_children()
+    for elementos in records:
+            Tabla_serie.delete(elementos)
+    for i in range(len(rango_i)-1,-1,-1):
+            Tabla_serie.insert("",0,values=(f"{rango_i[i]}-{round(rango_i[i]+0.2,2)} {matriz_chicuadrado[i]}"))
+
+   
+    Label(ventana_series,text=(f"SERIES = {matriz}")).pack(side="bottom")
+
+    if suma <= chi_critico:
+        Label(ventana_series,text=(F"{suma} <= {chi_critico} se ACEPTA la hipotesis de indenpendencia")).pack(side="bottom")
+    else:
+        Label(ventana_series,text=(F"{suma} > {chi_critico} se NO ACEPTA la hipotesis de indenpendencia")).pack(side="bottom")
 
 from prueba_poker3 import prueba_poker, prueba_poker_congruente, prueba_poker_lenguaje
 #PRUEBA POKER 3 DECIMALES
@@ -445,7 +469,7 @@ def prueba_poker_interfaz5():
 
 frame_independencia=LabelFrame(root,text="PRUEBAS DE INDEPENDENCIA",font=("Arial",12),labelanchor=N)
 frame_independencia.pack()
-frame_independencia.place(x=50,y=420)
+frame_independencia.place(x=50,y=450)
 
 
 btn_corrida=Button(frame_independencia,text="CORRIDA",width=17,height=2,font=("Arial",12),bg="MediumPurple1",command=lambda:prueba_corrida())

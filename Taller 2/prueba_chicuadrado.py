@@ -8,7 +8,6 @@ def chi_cuadrado(x,a,m,d):
     chi_calculado=0
     rangos=[0]*10
     recurrencias,min=generador_minimo(x,a,m,d)
-    #recurrencias,min=generador_minimo(5,106,6075)
     recurrencias.pop() 
     FE=round((len(recurrencias))/10)
     for i in range(len(recurrencias)):
