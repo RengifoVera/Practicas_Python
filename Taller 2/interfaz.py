@@ -1,5 +1,5 @@
 from tkinter import Entry, Label, LabelFrame, StringVar, Tk,Button,N, Toplevel, font, ttk, CENTER, END ,messagebox as mb,Frame
-from tkinter.constants import CHECKBUTTON, E
+from tkinter.constants import CHECKBUTTON, DISABLED, E, NORMAL
 from congruente import *
 from minimos import generador_minimo
 from prueba_corridas import prueba_corrridas_congruente, prueba_corrridas_lenguaje
@@ -35,7 +35,11 @@ entra_m=Entry(frame_inicio,width=25)
 entra_m.grid(row=4,column=5,padx=10)
 
 Label(frame_inicio,text="Decimales",font=("Arial",8)).grid(row=5,column=5)
-entra_d=Entry(frame_inicio,width=25)
+#SELECCION DE DECIMALES
+entra_d=ttk.Combobox(frame_inicio,width=20,state='readonly',font=("Arial",12))
+entra_d.set("Cantidad Decimales")
+decimales=["3","5"]
+entra_d['values']=decimales
 entra_d.grid(row=6,column=5,padx=10)
 
 
@@ -253,15 +257,9 @@ def prueba_kolmogorov():
 
 
 
-
 frame_uniformidad=LabelFrame(root,text="PRUEBAS DE UNIFORMIDAD",font=("Arial",12),labelanchor=N)
 frame_uniformidad.pack()
 frame_uniformidad.place(x=50,y=300)
-
-
-
-
-
 
 
 btn_chi=Button(frame_uniformidad,text="CHI CUADRADO(X2)",width=17,height=2,font=("Arial",12),bg="MediumPurple1",command=lambda:prueba_chicuadrado())
@@ -272,6 +270,7 @@ btn_kolmo.grid(row=0,column=1,padx=15,pady=15)
 
 #PRUEBAS DE INDEPENDENCIA
 
+#PRUEBA CORRIDAS
 from prueba_corridas import prueba_corrridas
 def prueba_corrida():
     ventana_corrida=Toplevel()
@@ -301,7 +300,148 @@ def prueba_corrida():
     else:
         Label(ventana_corrida,text=f"{Z_OBSERVADO} NO se encuentra en el intervalo [{Z1},{Z2}]").pack(side="bottom")
 
+
+# #from prueba_series import prueba_series, prueba_series_chicuadrado
+# #PRUEBA SERIES
+# def prueba_series_interfaz():
+#     ventana_series=Toplevel()
+#     ventana_series.title("Prueba SERIES")
+#     frame_serie=Frame(ventana_series)
+#     frame_serie.pack()
+
+#     Tabla_serie=ttk.Treeview(frame_serie,columns=[f"{n}" for n in range(0,6)],height=6)
+#     Tabla_serie.grid(row=0,column=0)
+
+#     Tabla_serie.column('#0',width=0,minwidth=0,stretch=False)
+#     Tabla_serie.column('#1',width=70,minwidth=0,stretch=False)
+#     Tabla_serie.column('#2',width=70,minwidth=0,stretch=False)
+#     Tabla_serie.column('#3',width=70,minwidth=0,stretch=False)
+#     Tabla_serie.column('#4',width=70,minwidth=0,stretch=False)
+#     Tabla_serie.column('#5',width=70,minwidth=0,stretch=False)
+#     Tabla_serie.column('#6',width=70,minwidth=0,stretch=False)
+
+
+#     Tabla_serie.heading('#0',text='',anchor=CENTER)
+#     Tabla_serie.heading('#1',text='',anchor=CENTER)
+#     Tabla_serie.heading('#2',text='0.2-0.4',anchor=CENTER)
+#     Tabla_serie.heading('#3',text='0.4-0.6',anchor=CENTER)
+#     Tabla_serie.heading('#4',text='0.6-0.8',anchor=CENTER)
+#     Tabla_serie.heading('#5',text='0.8-1',anchor=CENTER)
+#     Tabla_serie.heading('#6',text='0.8-1',anchor=CENTER)
+
+#     rango_i=[0,0.2,0.4,0.6,0.8]
+
+#     matriz=prueba_series(generador_minimo(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()),int(entra_d.get())))
+#     chi=prueba_series_chicuadrado(matriz,generador_minimo(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()),int(entra_d.get())))
+#     records=Tabla_serie.get_children()
+#     for elementos in records:
+#             Tabla_serie.delete(elementos)
+#     for i in range(len(rango_i)-1,-1,-1):
+#             Tabla_serie.insert("",0,values=(f"{rango_i[i]}-{round((rango_i[i]+0.2),1)}"))
+
+#     #Label(ventana_series,text=(F"{matriz}")).pack(side="bottom")
+
+from prueba_poker3 import prueba_poker, prueba_poker_congruente, prueba_poker_lenguaje
+#PRUEBA POKER 3 DECIMALES
+def prueba_poker_interfaz():
+    ventana_poker=Toplevel()
+    ventana_poker.title("Prueba POKER 3 DECIMALES")
+    frame_poker=Frame(ventana_poker)
+    frame_poker.pack()
+
+    Tabla_poker=ttk.Treeview(frame_poker,columns=[f"{n}" for n in range(0,4)],height=3)
+    Tabla_poker.grid(row=0,column=0)
+
+    Tabla_poker.column('#0',width=0,minwidth=0,stretch=False)
+    Tabla_poker.column('#1',width=70,minwidth=0,stretch=False)
+    Tabla_poker.column('#2',width=70,minwidth=0,stretch=False)
+    Tabla_poker.column('#3',width=70,minwidth=0,stretch=False)
+    Tabla_poker.column('#4',width=120,minwidth=0,stretch=False)
+
+
+
+    Tabla_poker.heading('#0',text='',anchor=CENTER)
+    Tabla_poker.heading('#1',text='CLASE',anchor=CENTER)
+    Tabla_poker.heading('#2',text='FO',anchor=CENTER)
+    Tabla_poker.heading('#3',text='FE',anchor=CENTER)
+    Tabla_poker.heading('#4',text='(FE-FO)^2/FE',anchor=CENTER)
+
+    #ELGIENDO GENERADOR
+    if entra_tipo.get()=="Ingrese Opcion":
+        mb.showerror("ERROR","INGRESE UN TIPO DE PRUEBA")
+    if entra_tipo.get()=="Minimo":
+        CLASES,FE,FO_FE,CHI_CAL=prueba_poker(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()),int(entra_d.get()))
+    elif entra_tipo.get()=="Congruente":
+       CLASES,FE,FO_FE,CHI_CAL=prueba_poker_congruente(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()),int(entra_c.get()))
+    elif entra_tipo.get()=="Random.py":
+        CLASES,FE,FO_FE,CHI_CAL=prueba_poker_lenguaje(int(entra_m.get()))
+
+
+    rango_i=[1,2,3]
+    chi_critico = 5.9915
+    records=Tabla_poker.get_children()
+    for elementos in records:
+            Tabla_poker.delete(elementos)
+    for i in range(len(rango_i)-1,-1,-1):
+            Tabla_poker.insert("",0,values=(f"{rango_i[i]} {CLASES[i]} {FE[i]} {FO_FE[i]}"))
+    if CHI_CAL <= chi_critico:
+        Label(ventana_poker,text=(f"{CHI_CAL} <= {chi_critico} Se ACEPTA LA HIPOTESIS" ),font=('Arial',10)).pack(side="bottom")
+    elif CHI_CAL > chi_critico:
+        Label(ventana_poker,text=(f"{CHI_CAL} > {chi_critico} NO SE ACEPTA LA HIPOTESIS" ),font=('Arial',10)).pack(side="bottom")
+
+from prueba_poker5 import prueba_poker5, prueba_poker5_congruente,prueba_poker5_lenguaje
+#PRUEBA POKER 5 DECIMALES
+def prueba_poker_interfaz5():
+    ventana_poker5=Toplevel()
+    ventana_poker5.title("Prueba POKER 5 DECIMALES")
+    frame_poker5=Frame(ventana_poker5)
+    frame_poker5.pack()
+
+    Tabla_poker5=ttk.Treeview(frame_poker5,columns=[f"{n}" for n in range(0,5)],height=7)
+    Tabla_poker5.grid(row=0,column=0)
+
+    Tabla_poker5.column('#0',width=0,minwidth=0,stretch=False)
+    Tabla_poker5.column('#1',width=120,minwidth=0,stretch=False)
+    Tabla_poker5.column('#2',width=120,minwidth=0,stretch=False)
+    Tabla_poker5.column('#3',width=120,minwidth=0,stretch=False)
+    Tabla_poker5.column('#4',width=120,minwidth=0,stretch=False)
+    Tabla_poker5.column('#5',width=120,minwidth=0,stretch=False)
+    Tabla_poker5.heading('#0',text='',anchor=CENTER)
+    Tabla_poker5.heading('#1',text='CLASE',anchor=CENTER)
+    Tabla_poker5.heading('#2',text='O(i)',anchor=CENTER)
+    Tabla_poker5.heading('#3',text='PROBABILIDAD',anchor=CENTER)
+    Tabla_poker5.heading('#4',text='EI',anchor=CENTER)
+    Tabla_poker5.heading('#5',text='(FE-FO)^2/FE',anchor=CENTER)
+
+        #ELGIENDO GENERADOR
+    if entra_tipo.get()=="Ingrese Opcion":
+        mb.showerror("ERROR","INGRESE UN TIPO DE PRUEBA")
+    if entra_tipo.get()=="Minimo":
+        Oi,PRO,EI,FE_FO,suma=prueba_poker5(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()),int(entra_d.get()))
+    elif entra_tipo.get()=="Congruente":
+        Oi,PRO,EI,FE_FO,suma=prueba_poker5_congruente(int(entra_x0.get()),int(entra_a.get()),int(entra_m.get()),int(entra_d.get()))
+    elif entra_tipo.get()=="Random.py":
+        Oi,PRO,EI,FE_FO,suma=prueba_poker5_lenguaje(int(entra_m.get()))
+
+    rango_i=["TD","PAR","2PAR","TP","TERCIA","POKER","QUINTILLA"]
+    chi_critico=12.592
+
+    records=Tabla_poker5.get_children()
+    for elementos in records:
+        Tabla_poker5.delete(elementos)
+    for i in range(len(rango_i)-1,-1,-1):
+            Tabla_poker5.insert("",0,values=(f"{rango_i[i]} {Oi[i]}  {PRO[i]} {EI[i]} {FE_FO[i]}"))
+
+    if suma<=chi_critico:
+        Label(ventana_poker5,text=(f"{suma} <= {chi_critico} se ACEPTA la hipotesis de indenpencia"),font=('Arial',10)).pack(side="bottom")
+    else:
+        Label(ventana_poker5,text=(f"{suma} > {chi_critico} se RECHAZA la hipotesis de indenpencia"),font=('Arial',10)).pack(side="bottom")
+
     
+    
+
+
+
 
 frame_independencia=LabelFrame(root,text="PRUEBAS DE INDEPENDENCIA",font=("Arial",12),labelanchor=N)
 frame_independencia.pack()
@@ -310,15 +450,14 @@ frame_independencia.place(x=50,y=420)
 
 btn_corrida=Button(frame_independencia,text="CORRIDA",width=17,height=2,font=("Arial",12),bg="MediumPurple1",command=lambda:prueba_corrida())
 btn_corrida.grid(row=0,column=0,padx=15,pady=15)
-btn_serie=Button(frame_independencia,text="SERIE",width=17,height=2,font=("Arial",12),bg="MediumPurple1").grid(row=0,column=1,padx=15,pady=15)
-btn_poker=Button(frame_independencia,text="POKER",width=17,height=2,font=("Arial",12),bg="MediumPurple1").grid(row=1,column=0,padx=15,pady=15)
+btn_serie=Button(frame_independencia,text="SERIE",width=17,height=2,font=("Arial",12),bg="MediumPurple1",command=lambda:prueba_series_interfaz()).grid(row=0,column=1,padx=15,pady=15)
+btn_poker=Button(frame_independencia,text="POKER",width=17,height=2,font=("Arial",12),bg="MediumPurple1",command=lambda:seleccion(entra_d.get())).grid(row=1,column=0,padx=15,pady=15)
 
-
-
-
-
-
-
+def seleccion(d):
+    if d == "3":
+        prueba_poker_interfaz()
+    elif d == "5":
+        prueba_poker_interfaz5()
 
 
 

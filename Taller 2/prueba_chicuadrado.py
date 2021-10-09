@@ -46,7 +46,7 @@ def chi_cuadrado_congruente(x,a,c,m):
     recurrencias,min=generador_congruente(x,a,c,m)
     #recurrencias,min=generador_minimo(5,106,6075)
     recurrencias.pop() 
-    FE=round((len(recurrencias))/10)
+    FE=round((len(recurrencias))/10,5)
     for i in range(len(recurrencias)):
         if recurrencias[i]>=0 and recurrencias[i]<0.1:
             rangos[0]+=1
